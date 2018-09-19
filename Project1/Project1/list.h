@@ -20,7 +20,7 @@ public:
 
 	void search(string text);
 
-	int quit();
+	bool quit();
 };
 
 	

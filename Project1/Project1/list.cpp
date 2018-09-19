@@ -76,5 +76,40 @@ void list::print() {
 
 void list::search(string text) {
 	
+	temp = head;
+	const char *search = text.c_str();
+	int searchlength = strlen(search);
+	int index = 1;
 
+	while (temp != NULL) {
+
+		const char *line = temp->line.c_str();
+		int lineLength = strlen(line);
+		bool x = false;
+
+		for (int i = 0; i < lineLength; i++) 
+			if (line[i] == search[0] && i+searchlength < lineLength && x == false) 
+				for (int j = 1; j < searchlength; j++) {
+
+					if (line[i + j] == search[j]) {
+						x = true;
+					}
+					else {
+						x = false;
+						break;
+					}
+						
+				}
+		
+		cout << index + " " + temp->line << endl;
+
+		index++;
+
+		temp = temp->next;
+
+	}
+}
+
+bool list::quit() {
+	return false;
 }
