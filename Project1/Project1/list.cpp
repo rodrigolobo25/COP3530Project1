@@ -1,7 +1,7 @@
 #include "list.h"
 #include <iostream>
 #include <string>
-#include "node.h"
+#include "node.cpp"
 
 using namespace std;
 

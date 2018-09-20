@@ -8,3 +8,5 @@ node::node(string line, node* next) {
 	this->line = line;
 	this->next = next;
 }
+
+ 
