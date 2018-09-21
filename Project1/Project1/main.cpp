@@ -12,7 +12,7 @@ node::node(string line, node* next) {
 }
 void list::insertEnd(string text) {
 	node* p = new node(text, NULL);
-	if (head->next == last)
+	if (head->next == NULL)
 		head->next = p;
 	else
 		last->next->next = p;
@@ -27,6 +27,9 @@ void list::insert(int index, string text){
 		return;
 	}
 	while (index != 2) {
+		if (temp->next == NULL) {
+			return;
+		}
 		temp = temp->next;
 		index--;
 	}
@@ -38,14 +41,25 @@ void list::dlete(int index){
 	temp = head->next;
 	int num = 2;
 	if (index == 1){
-		head = head->next;
+		if (head->next == NULL) {
+			return;
+		}
+		head->next = head->next->next;
 		delete(temp);
 		return;
 	}
-	while (num != index) {
+	while (num < index) {
+		if (temp == NULL) {
+			return;
+		}
 		temp = temp->next;
 		num++;
 	}
+
+	if (temp == NULL || temp->next == NULL) {
+		return;
+	}
+
 	node* p = temp->next;
 	temp->next = p->next;
 	delete(p);
@@ -54,32 +68,40 @@ void list::dlete(int index){
 
 void list::edit(int index, string text) {
 	temp = head->next;
-	int num = 2;
+	int num = 1;
 	if (index == 1) {
 		node* p = new node(text, temp->next);
 		delete(temp);
 		head = p;
 		return;
 	}
-	while (num != index + 1) {
+
+	while (num+1 < index) {
+		if (temp == NULL) {
+			return;
+		}
 		temp = temp->next;
 		num++;
+	}
+
+	if (temp == NULL) {
+		return;
 	}
 	node* p = new node(text, temp->next->next);
 	delete(temp->next);
 	temp->next = p;
 }
 
+
 void list::print() {
 	temp = head->next;
 	int index = 1;
-	while (temp->next != NULL)
+	while (temp != NULL)
 	{
 		cout<<index << " " << temp->line<<endl;
 		temp = temp->next;
 		index++;
 	}
-	cout << index << " " << temp->line << endl;
 }
 
 void list::search(string text) {
@@ -88,6 +110,7 @@ void list::search(string text) {
 	const char *search = text.c_str();
 	int searchlength = strlen(search);
 	int index = 1;
+	bool exist = false;
 
 	while (temp != NULL) {
 
@@ -96,7 +119,7 @@ void list::search(string text) {
 		bool x = false;
 
 		for (int i = 0; i < lineLength; i++) 
-			if (line[i] == search[0] && i+searchlength < lineLength && x == false) 
+			if (line[i] == search[0] && i+searchlength <= lineLength && x == false)
 				for (int j = 1; j < searchlength; j++) {
 
 					if (line[i + j] == search[j]) {
@@ -108,14 +131,19 @@ void list::search(string text) {
 					}
 						
 				}
+		if (x){
+			cout << index << " " << temp->line << endl;
+			exist = true;
+		}
 		
-		cout << index + " " + temp->line << endl;
 
 		index++;
 
 		temp = temp->next;
 
 	}
+	if (!exist)
+		cout << "not found" << endl;
 }
 
 bool list::quit() {
@@ -162,7 +190,7 @@ int main() {
 
 			index = atoi(indexstr.c_str());                  //convert a string to an int
 
-			for (int i = start + 1; i < linelength - 1; i++)
+			for (int i = start + 2; i < linelength - 1; i++)
 				text = text + line[i];
 
 			thelist->insert(index, text);
@@ -197,7 +225,7 @@ int main() {
 
 			index = atoi(indexstr.c_str());                  //convert a string to an int
 
-			for (int i = start + 1; i < linelength - 1; i++)
+			for (int i = start + 2; i < linelength - 1; i++)
 				text = text + line[i];
 
 			thelist->edit(index, text);

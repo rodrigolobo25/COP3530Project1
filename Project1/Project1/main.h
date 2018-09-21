@@ -21,7 +21,7 @@ class list
 public:
 	
 	node* last = new node("", NULL);
-	node* head = new node("", last);
+	node* head = new node("", NULL);
 	node* temp = head;
 
 	void insertEnd(string text);
